@@ -120,6 +120,11 @@ def update_database(results):
         insertstmt = ("INSERT INTO table(Visitor_ID, Browser_Type, Browser_Version, Operation_System, Operation_System_Version, Screen_Resolution, Device_Category) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (ID, Browser_Type,  Browser_Version, OS_Type, OS_Version, Screen_Res, Device_Cat))  
 
         try:
+            conn.set_character_set('utf8')
+            cursor.execute('SET NAMES utf8;')
+            cursor.execute('SET CHARACTER SET utf8;')
+            cursor.execute('SET character_set_connection=utf8;')
+            
             cursor.execute(insertstmt)
             conn.commit()
         except TypeError as error:
