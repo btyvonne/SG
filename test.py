@@ -40,7 +40,8 @@ def main(argv):
         start_index = 1
         max_results = 10000
         results = get_top_keywords(service, start_index, max_results)
-        update_database(results)
+        print results.get('profileInfo').get('profileName')
+        obs = results.get('rows')
         totalResults = results.get("totalResults")
         print totalResults
         remainResults = totalResults - max_results
@@ -50,14 +51,14 @@ def main(argv):
             while remainResults > 0: 
                 if remainResults - max_results > 0 :
                     results = get_top_keywords(service, start_index, max_results)
-                    update_database(results)
+                    obs = obs + results.get('rows')
                     start_index = start_index + max_results
                     remainResults = remainResults - max_results
                 else :
                     remainResults = remainResults - max_results;
                     results = get_top_keywords(service, start_index, max_results)
-                    update_database(results)
-
+                    obs = obs + results.get('rows')
+        update_database(obs)
 
 
     except TypeError, error:
@@ -96,18 +97,14 @@ def get_top_keywords(service, start_index, max_results):
         max_results=max_results).execute()
 
 
-def update_database(results):
-
-    print
-    print 'Profile Name: %s' % results.get('profileInfo').get('profileName')
-    print
+def update_database(obs):
     
     conn = MySQLdb.connect(host = host,port = port, user = user, passwd = passwd, db = db)
     
     cursor = conn.cursor()
    
 
-    for row in results.get('rows'):
+    for row in obs:
 
         ID = row[0]
         Browser_Type = row[1]
