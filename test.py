@@ -35,6 +35,16 @@ def main(argv):
     http = credential.authorize(http)
     service = build('analytics', 'v3', http=http)
 
+    one_day = timedelta(days=1)
+    start_date = raw_input("(yyyy-mm-dd):")
+    if start_date == "":
+        start_date = date.today() - one_day
+    end_date = date.today() - one_day
+    
+    start_date = start_date.strftime('%Y-%m-%d')
+    end_date = end_date.strftime('%Y-%m-%d')
+    
+    
     # Try to make a request to the API. Print the results or handle errors.
     try:
         start_index = 1
